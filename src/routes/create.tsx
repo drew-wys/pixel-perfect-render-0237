@@ -50,12 +50,17 @@ function CreateQuizPage() {
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim()) return toast.error("Give the quiz a title.");
+    if (!title.trim()) {
+      toast.error("Give the quiz a title.");
+      return;
+    }
     const cleaned = questions
       .map((q) => ({ ...q, prompt: q.prompt.trim(), options: q.options.map((o) => o.trim()) }))
       .filter((q) => q.prompt && q.options.every(Boolean));
-    if (!cleaned.length)
-      return toast.error("Add at least one question with all four answer options filled in.");
+    if (!cleaned.length) {
+      toast.error("Add at least one question with all four answer options filled in.");
+      return;
+    }
 
     addQuiz({
       id: uid(),
