@@ -153,7 +153,7 @@ function CreateQuizPage() {
                 >
                   <input
                     type="radio"
-                    name={`correct-${q.id}`}
+                    name={`correct-question-${qi}`}
                     checked={q.correctIndex === oi}
                     onChange={() => update(q.id, { correctIndex: oi })}
                     className="accent-[var(--primary)]"
