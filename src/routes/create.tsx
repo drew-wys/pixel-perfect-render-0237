@@ -43,7 +43,11 @@ function CreateQuizPage() {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [minutes, setMinutes] = useState(5);
-  const [questions, setQuestions] = useState<Question[]>([emptyQuestion()]);
+  const [questions, setQuestions] = useState<Question[]>([]);
+
+  useEffect(() => {
+    setQuestions((qs) => (qs.length ? qs : [emptyQuestion()]));
+  }, []);
 
   const update = (id: string, patch: Partial<Question>) =>
     setQuestions((qs) => qs.map((q) => (q.id === id ? { ...q, ...patch } : q)));
