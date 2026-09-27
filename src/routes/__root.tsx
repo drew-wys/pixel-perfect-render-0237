@@ -119,13 +119,58 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function SiteHeader() {
+  const linkClass =
+    "text-sm text-muted-foreground transition-colors hover:text-foreground";
+  return (
+    <header className="border-b border-border/70 bg-background/80 backdrop-blur">
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+        <Link to="/" className="font-display text-lg tracking-tight">
+          QuizDesk
+        </Link>
+        <nav className="flex items-center gap-6">
+          <Link to="/" className={linkClass} activeProps={{ className: "text-sm text-foreground font-medium" }}>
+            Quizzes
+          </Link>
+          <Link
+            to="/create"
+            className={linkClass}
+            activeProps={{ className: "text-sm text-foreground font-medium" }}
+          >
+            Create quiz
+          </Link>
+          <Link
+            to="/results"
+            className={linkClass}
+            activeProps={{ className: "text-sm text-foreground font-medium" }}
+          >
+            Results
+          </Link>
+        </nav>
+      </div>
+    </header>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <div className="flex min-h-screen flex-col">
+        <SiteHeader />
+        <main className="flex-1">
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+        </main>
+        <footer className="border-t border-border/70 py-8">
+          <p className="mx-auto max-w-5xl px-6 text-xs text-muted-foreground">
+            QuizDesk — quizzes are saved in your browser.
+          </p>
+        </footer>
+      </div>
+      <Toaster />
     </QueryClientProvider>
   );
+
 }
