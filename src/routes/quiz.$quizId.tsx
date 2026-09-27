@@ -119,7 +119,7 @@ function TakeQuizPage() {
     );
   }
 
-  const q = quiz.questions[index];
+  const q = quiz.questions[index]!;
   const mm = String(Math.floor((secondsLeft ?? 0) / 60)).padStart(2, "0");
   const ss = String((secondsLeft ?? 0) % 60).padStart(2, "0");
 
