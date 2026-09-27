@@ -10,6 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { Toaster } from "../components/ui/sonner";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -77,23 +78,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "QuizDesk" },
+      { name: "description", content: "Calm online quiz management and timed quiz taking." },
+      { property: "og:title", content: "QuizDesk" },
+      { property: "og:description", content: "Calm online quiz management and timed quiz taking." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter+Tight:wght@400;500;600&display=swap",
+      },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
+
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
@@ -114,13 +120,58 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function SiteHeader() {
+  const linkClass =
+    "text-sm text-muted-foreground transition-colors hover:text-foreground";
+  return (
+    <header className="border-b border-border/70 bg-background/80 backdrop-blur">
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+        <Link to="/" className="font-display text-lg tracking-tight">
+          QuizDesk
+        </Link>
+        <nav className="flex items-center gap-6">
+          <Link to="/" className={linkClass} activeProps={{ className: "text-sm text-foreground font-medium" }}>
+            Quizzes
+          </Link>
+          <Link
+            to="/create"
+            className={linkClass}
+            activeProps={{ className: "text-sm text-foreground font-medium" }}
+          >
+            Create quiz
+          </Link>
+          <Link
+            to="/results"
+            className={linkClass}
+            activeProps={{ className: "text-sm text-foreground font-medium" }}
+          >
+            Results
+          </Link>
+        </nav>
+      </div>
+    </header>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <div className="flex min-h-screen flex-col">
+        <SiteHeader />
+        <main className="flex-1">
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+        </main>
+        <footer className="border-t border-border/70 py-8">
+          <p className="mx-auto max-w-5xl px-6 text-xs text-muted-foreground">
+            QuizDesk — quizzes are saved in your browser.
+          </p>
+        </footer>
+      </div>
+      <Toaster />
     </QueryClientProvider>
   );
+
 }
